@@ -4,16 +4,12 @@ const headerOfTable = document.querySelector('thead tr');
 const headers = headerOfTable.querySelectorAll('th');
 
 const sortTable = (index) => {
-  const rows = document.querySelectorAll('tbody tr');
-  const column = [];
+  const tableBody = document.querySelector('tbody');
+  const rows = Array.from(tableBody.querySelectorAll('tr'));
 
-  rows.forEach((row) => {
-    column.push(row.cells[index].cloneNode(true));
-  });
-
-  column.sort((a, b) => {
-    const textA = a.innerText.trim();
-    const textB = b.innerText.trim();
+  rows.sort((a, b) => {
+    const textA = a.cells[index].innerText.trim();
+    const textB = b.cells[index].innerText.trim();
 
     const extractNumericValue = (text) => {
       return parseFloat(text.replace(/[$,]/g, ''));
@@ -29,9 +25,8 @@ const sortTable = (index) => {
     }
   });
 
-  column.forEach((cell, i) => {
-    rows[i].replaceChild(cell, rows[i].cells[index]);
-  });
+  tableBody.innerHTML = '';
+  rows.forEach((row) => tableBody.appendChild(row));
 };
 
 headers.forEach((nav, index) => {
